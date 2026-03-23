@@ -1,3 +1,4 @@
 # ComWeb_Projet
 
-c'est le dépot de notre projet de communication web
+Scéance 1 :
+Creation de tout les dossiers pour les différents fichier
