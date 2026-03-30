@@ -1,24 +1,50 @@
+/* --- Images : Carrées, arrondies et centrées --- */
 .card-img-top {
     width: 100%;
     aspect-ratio: 1 / 1; 
     object-fit: cover; 
     object-position: center; 
     border-radius: 20px;
+    margin-bottom: 1rem; /* Espace sous l'image dans ta structure */
 }
 
-.card{
-    border: 3px solid;
+/* --- Cartes : Bordures épaisses et hauteur uniforme --- */
+.card {
+    border: 3px solid #F27407; /* Couleur orange pour la bordure */
+    height: 100%; /* Force la carte à prendre toute la hauteur de la ligne Bootstrap */
+    display: flex;
+    flex-direction: column;
 }
 
+/* --- Corps de la carte : Aligne les boutons en bas --- */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Permet au corps de s'étendre pour pousser le bouton vers le bas */
+}
+
+.card-text {
+    flex-grow: 1; /* Pousse le prix et le bouton vers le bas même si la description est courte */
+}
+
+/* --- Couleurs personnalisées (Orange UmaShop) --- */
 .bg-orange {
     background-color: #F27407 !important;
 }
 
-.bg-orange {
-    background-color: #F27407 !important;
-}
-
-.btn-sm{
+.btn-sm {
     color: #F27407;
     border-color: #F27407;
+    transition: 0.3s;
+}
+
+.btn-sm:hover {
+    background-color: #F27407;
+    color: white;
+    border-color: #F27407;
+}
+
+
+.card-header.bg-orange {
+    border-bottom: 2px solid #d46306;
 }
