@@ -42,39 +42,31 @@
                         </form>
                     </div>
                 </div>
+//Menu de filtrage
+                <div class="mb-3">
+                    <select class="form-select w-auto" onchange="requestProducts(this.value)">
+                        <option value="">Toutes les catégories</option>
+                        <option value="Peluche">Peluches</option>
+                        <option value="Accessoire">Accessoires</option>
+                    </select>
+                </div>
 
-                <h2 class="mb-3">Notre Catalogue</h2>
-                <div class="row g-3" id="product-grid">
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Plushie Agnès Tachyon</h5>
-                                <img src="img/tachyon_idle.jpeg" class="card-img-top" alt="Plush representing Tachyon" />
-                                <p class="card-text">Description courte du produit.</p>
-                                <p class="fw-bold">19.99 €</p>
-                                <button class="btn btn-sm btn-outline-primary">Voir détails</button>
-                            </div>
+//Grille produits
+            <h2 class="mb-3">Notre Catalogue</h2>
+            <div class="row g-3" id="product-grid"></div>
+
+            <hr class="my-5">
+
+//Sections détails
+            <section id="product-detail" class="mt-4">
+                <div class="card">
+                    <div class="card-header bg-orange text-white">Détails du produit</div>
+                        <div class="card-body" id="detail-content">
+                            <p class="text-muted">Cliquez sur un produit ci-dessus pour voir ses avis.</p>
                         </div>
                     </div>
-                    </div>
-
-                <hr class="my-5">
-
-                <section id="product-detail" class="mt-4">
-                    <h3>Détails du produit sélectionné</h3>
-                    <div class="p-3 border bg-light">
-                        <p>Contenu détaillé du produit et formulaire d'avis...</p>
-                        
-                        <div class="mt-3">
-                            <h6>Avis clients</h6>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>Client1:</strong> Super produit ! (5/5)</li>
-                                <li class="list-group-item"><strong>Client2:</strong> Pas mal. (3/5)</li>
-                                </ul>
-                        </div>
-                    </div>
-                </section>
             </section>
+
 
             <aside class="col-md-3">
                 <div class="card sticky-top" style="top: 20px;">
