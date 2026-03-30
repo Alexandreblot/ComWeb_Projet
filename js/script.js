@@ -19,7 +19,7 @@ function requestProducts(category = null) {
 }
 
 function loadProductDetail(productId) {
-    fetch(`backend/product.php?id=${productId}`)
+    fetch(`php/product.php?id=${productId}`)
         .then(res => res.json())
         .then(product => {
             document.getElementById('detail-title').textContent = product.name;
