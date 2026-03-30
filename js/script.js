@@ -59,3 +59,8 @@ function requestReviews(id) {
         .then(res => res.json())
         .then(data => console.log(data));
 }
+
+function displayProducts(products) {
+    console.log(products); // pour test S2
+}
+
