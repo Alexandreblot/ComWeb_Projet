@@ -36,7 +36,7 @@ CREATE TABLE products
   category VARCHAR(50) NOT NULL,
   stock INT DEFAULT 0,
   image VARCHAR(255),
-  dimensions VARCHAR(50) NULL
+  dimensions VARCHAR(50) NULL,
   userLogin VARCHAR(50),
   PRIMARY KEY(id),
   FOREIGN KEY (userLogin) REFERENCES users(login)
