@@ -61,6 +61,11 @@ function displayProducts(products) {
 }
 
 
+function displayReviews(productId) {
+    reviews = requestReviews(productId); //temporaire
+}
+
+
 function requestProduct(id) {
     fetch(API_BASE + 'product.php?id=' + id)
         .then(res => res.json())
@@ -73,7 +78,4 @@ function requestReviews(id) {
         .then(data => console.log(data));
 }
 
-function displayProducts(products) {
-    console.log(products); // pour test S2
-}
 
