@@ -1,7 +1,10 @@
 'use strict';
 
+const API_BASE = 'php/';
+
+
 function requestProducts(category = null) {
-    let url = '/backend/products.php';
+    let url = API_BASE + 'products.php';
 
     if (category) {
         url += '?category=' + category;
@@ -12,8 +15,14 @@ function requestProducts(category = null) {
         .then(data => displayProducts(data));
 }
 
-function displayProducts(products) {
-    console.log(products); // pour test S2
+function requestProduct(id) {
+    fetch(API_BASE + 'product.php?id=' + id)
+        .then(res => res.json())
+        .then(data => console.log(data));
 }
 
-
+function requestReviews(id) {
+    fetch(API_BASE + 'reviews.php?id=' + id)
+        .then(res => res.json())
+        .then(data => console.log(data));
+}
