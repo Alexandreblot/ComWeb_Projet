@@ -2,6 +2,9 @@
 
 const API_BASE = 'php/';
 
+document.addEventListener('DOMContentLoaded', () => {
+    requestProducts();
+});
 
 function requestProducts(category = null) {
     let url = API_BASE + 'products.php';
