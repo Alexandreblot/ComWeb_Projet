@@ -1,0 +1,24 @@
+.card-img-top {
+    width: 100%;
+    aspect-ratio: 1 / 1; 
+    object-fit: cover; 
+    object-position: center; 
+    border-radius: 20px;
+}
+
+.card{
+    border: 3px solid;
+}
+
+.bg-orange {
+    background-color: #F27407 !important;
+}
+
+.bg-orange {
+    background-color: #F27407 !important;
+}
+
+.btn-sm{
+    color: #F27407;
+    border-color: #F27407;
+}
