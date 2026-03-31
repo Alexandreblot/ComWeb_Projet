@@ -22,9 +22,9 @@ function loadProductDetail(productId) {
     fetch(`php/product.php?id=${productId}`)
         .then(res => res.json())
         .then(product => {
-            document.getElementById('detail-title').textContent = product.name;
+            document.getElementById('detail-content').textContent = product.name;
             
-            const imgEl = document.getElementById('detail-img');
+            const imgEl = document.getElementById('detail-img');    //à ajouter dans le html (n'existe pas)
             imgEl.src = product.image; 
             imgEl.onerror = () => imgEl.src = 'img/tachyon_idle.jpeg';
 
@@ -62,7 +62,7 @@ function displayProducts(products) {
 
 
 function displayReviews(productId) {
-    reviews = requestReviews(productId); //temporaire
+    requestReviews(productId); //temporaire
 }
 
 
