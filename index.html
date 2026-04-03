@@ -1,91 +1,208 @@
 <!--
-\\Author: Gabriel Pagniez
+  Author: Gabriel Pagniez
+  Boutique UmaShop — CIR2 ISEN Ouest
 -->
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boutique Simplifiée - Projet CIR2</title>
+    <title>UmaShop — Uma Musume Pretty Derby</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-orange mb-4">
-        <div class="container">
-            <a class="navbar-brand" href="#">UmaShop</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="#">Électronique</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Maison</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Sport</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<!-- GRAIN OVERLAY -->
+<div class="grain" aria-hidden="true"></div>
 
-    <main class="container">
-        <div class="row">
-            
-            <section class="col-md-9">
-                
-                <div id="admin-form" class="card mb-4 d-none">
-                    <div class="card-body">
-                        <h5 class="card-title">Ajouter un produit (Admin)</h5>
-                        <form>
-                            <input type="text" class="form-control mb-2" placeholder="Nom du produit">
-                            <textarea class="form-control mb-2" placeholder="Description"></textarea>
-                            <button type="submit" class="btn btn-primary">Enregistrer</button>
-                        </form>
-                    </div>
+<!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+<header class="site-header" id="site-header">
+    <div class="header-inner">
+
+        <a class="logo" href="#" onclick="requestProducts(); return false;">
+            <span class="logo-mark">U</span>
+            <span class="logo-text">UmaShop</span>
+        </a>
+
+        <nav class="header-nav">
+            <a class="hnav-link" href="#" onclick="requestProducts('plushies'); return false;">Peluches</a>
+            <a class="hnav-link" href="#" onclick="requestProducts('goodies'); return false;">Accessoires</a>
+            <a class="hnav-link" href="#" onclick="requestProducts('posters'); return false;">Posters</a>
+            <a class="hnav-link" href="#" onclick="requestProducts('figures'); return false;">Figurines</a>
+        </nav>
+
+        <div class="header-actions">
+            <div class="user-chip d-none" id="user-chip">
+                <span class="user-chip-avatar" id="chip-avatar">?</span>
+                <span class="user-chip-name" id="chip-name">–</span>
+                <span class="user-chip-role" id="chip-role">client</span>
+                <button class="chip-logout" onclick="logout()" title="Déconnexion">✕</button>
+            </div>
+            <button class="btn-hlogin" id="btn-open-login" onclick="toggleLoginPanel()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="7" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+                Connexion
+            </button>
+        </div>
+
+    </div>
+</header>
+
+<!-- ══════════════════════════ LOGIN PANEL ══════════════════════ -->
+<div class="login-overlay d-none" id="login-overlay" onclick="toggleLoginPanel()"></div>
+<div class="login-panel" id="login-panel" aria-hidden="true">
+    <button class="login-close" onclick="toggleLoginPanel()" aria-label="Fermer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <p class="login-eyebrow">Espace membre</p>
+    <h2 class="login-title">Connexion</h2>
+    <div class="login-fields">
+        <div class="field-group">
+            <label class="field-label" for="login-input">Identifiant</label>
+            <input type="text" class="field-input" id="login-input" placeholder="ex: client1" autocomplete="username">
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="password-input">Mot de passe</label>
+            <input type="password" class="field-input" id="password-input" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <p class="login-error d-none" id="login-error">Identifiants incorrects. Veuillez réessayer.</p>
+        <button class="btn-login-submit" onclick="login()">Se connecter</button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════ HERO ═════════════════════════════ -->
+<section class="hero">
+    <div class="hero-deco-text" aria-hidden="true">ウマ娘</div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">
+            <span class="eyebrow-line"></span>
+            Collection Officielle 2025
+            <span class="eyebrow-line"></span>
+        </p>
+        <h1 class="hero-title">Uma Musume<br><em>Pretty Derby</em></h1>
+        <p class="hero-sub">Figurines exclusives · Peluches · Posters · Goodies</p>
+        <div class="hero-actions">
+            <button class="btn-cta-primary" onclick="scrollToCatalogue()">Explorer le catalogue</button>
+            <button class="btn-cta-outline" onclick="requestProducts('figures'); scrollToCatalogue()">Voir les figurines</button>
+        </div>
+    </div>
+    <div class="hero-stats">
+        <div class="hstat"><span class="hstat-n">6</span><span class="hstat-l">Références</span></div>
+        <div class="hstat-sep"></div>
+        <div class="hstat"><span class="hstat-n">4</span><span class="hstat-l">Catégories</span></div>
+        <div class="hstat-sep"></div>
+        <div class="hstat"><span class="hstat-n">★ 4.8</span><span class="hstat-l">Note clients</span></div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════ MAIN ═════════════════════════════ -->
+<main class="site-main" id="catalogue-anchor">
+    <div class="site-layout">
+
+        <!-- ───────── CONTENU PRINCIPAL ───────── -->
+        <div class="content-col">
+
+            <!-- ADMIN — Ajout produit -->
+            <div class="admin-panel d-none" id="admin-form">
+                <div class="admin-panel-head">
+                    <span class="tag-admin">ADMIN</span>
+                    <h3>Nouveau produit</h3>
                 </div>
-//Menu de filtrage
-                <div class="mb-3">
-                    <select class="form-select w-auto" onchange="requestProducts(this.value)">
-                        <option value="">Toutes les catégories</option>
+                <form id="form-add-product" class="admin-grid">
+                    <input  type="text"   class="field-input" id="product-name"     placeholder="Nom du produit">
+                    <input  type="number" class="field-input" id="product-price"    placeholder="Prix (€)" step="0.01">
+                    <select              class="field-input" id="product-category">
+                        <option value="">Catégorie…</option>
                         <option value="plushies">Peluches</option>
                         <option value="goodies">Accessoires</option>
                         <option value="posters">Posters</option>
                         <option value="figures">Figurines</option>
                     </select>
+                    <input  type="number" class="field-input" id="product-stock"    placeholder="Stock">
+                    <textarea            class="field-input col-span-2" id="product-desc" rows="2" placeholder="Description…"></textarea>
+                    <button type="submit" class="btn-cta-primary col-span-2">Enregistrer</button>
+                </form>
+            </div>
+
+            <!-- CATALOGUE HEADER -->
+            <div class="catalogue-head">
+                <div>
+                    <h2 class="section-heading">Catalogue</h2>
+                    <span class="product-count-label" id="product-count"></span>
                 </div>
+                <div class="filter-bar">
+                    <button class="filter-pill active" data-cat="" onclick="setFilter(this, '')">Tout</button>
+                    <button class="filter-pill" data-cat="plushies" onclick="setFilter(this, 'plushies')">Peluches</button>
+                    <button class="filter-pill" data-cat="goodies"  onclick="setFilter(this, 'goodies')">Accessoires</button>
+                    <button class="filter-pill" data-cat="posters"  onclick="setFilter(this, 'posters')">Posters</button>
+                    <button class="filter-pill" data-cat="figures"  onclick="setFilter(this, 'figures')">Figurines</button>
+                </div>
+            </div>
 
-//Grille produits
-            <h2 class="mb-3">Notre Catalogue</h2>
-            <div class="row g-3" id="product-grid"></div>
+            <!-- GRILLE -->
+            <div class="product-grid" id="product-grid">
+                <div class="grid-loader" id="grid-loader">
+                    <div class="loader-ring"></div>
+                </div>
+            </div>
 
-            <hr class="my-5">
-
-//Sections détails
-            <section id="product-detail" class="mt-4">
-                <div class="card">
-                    <div class="card-header bg-orange text-white">Détails du produit</div>
-                        <div class="card-body" id="detail-content">
-                            <p class="text-muted">Cliquez sur un produit ci-dessus pour voir ses avis.</p>
-                        </div>
+            <!-- DÉTAIL PRODUIT -->
+            <div class="section-divider" id="detail-divider"></div>
+            <section id="product-detail">
+                <div class="detail-placeholder" id="detail-content">
+                    <div class="detail-placeholder-inner">
+                        <span class="detail-placeholder-icon">◈</span>
+                        <p>Cliquez sur un produit pour afficher son détail.</p>
                     </div>
+                </div>
             </section>
 
+        </div>
 
-            <aside class="col-md-3">
-                <div class="card sticky-top" style="top: 20px;">
-                    <div class="card-header bg-orange text-white">Support Client</div>
-                    <div id="chat-box" class="card-body overflow-auto" style="height: 300px;">
-                        <p class="text-muted small">Bienvenue sur le chat.</p>
-                    </div>
-                    <div class="card-footer">
-                        <input type="text" class="form-control form-control-sm" placeholder="Votre message...">
+        <!-- ───────── SIDEBAR ───────── -->
+        <aside class="sidebar">
+            <div class="sidebar-chat" id="sidebar-chat">
+                <div class="sidebar-chat-head">
+                    <span class="sidebar-chat-title">Support Client</span>
+                    <div class="ws-badge" id="ws-indicator">
+                        <span class="ws-dot"></span>En ligne
                     </div>
                 </div>
-            </aside>
+                <div class="chat-messages" id="chat-box">
+                    <div class="chat-welcome">
+                        <span>◈</span>
+                        <p>Une question ? Notre équipe vous répond en direct.</p>
+                    </div>
+                </div>
+                <div class="chat-compose">
+                    <input type="text" class="chat-field" id="chat-input" placeholder="Votre message…">
+                    <button class="chat-send-btn" onclick="sendMessage()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    </button>
+                </div>
+            </div>
+        </aside>
 
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <span class="logo-mark small">U</span>
+        <div>
+            <p class="footer-brand-name">UmaShop</p>
+            <p class="footer-copy">© 2025 — Projet CIR2 ISEN Ouest · Uma Musume Pretty Derby est une propriété de Cygames, Inc.</p>
         </div>
-    </main>
+    </div>
+</footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
