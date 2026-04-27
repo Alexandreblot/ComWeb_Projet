@@ -1,25 +1,19 @@
-/* ================================================================
-   UmaShop — style.css
-   Thème : Dark luxury editorial — collectibles japonais premium
-   Palette : #0c0c0e (fond) · #c9a84c (or) · #f2ede6 (texte)
-   Fonts  : Cormorant Garamond (display) · DM Sans (body)
-   ================================================================ */
-
 /* ─── TOKENS ───────────────────────────────────────────────────── */
 :root {
-    --bg:         #0c0c0e;
-    --bg-2:       #111115;
+    --bg:         hsla(0, 0%, 0%, 0.816);
+    --bg-2:       #0e2d15;
     --bg-3:       #18181d;
     --bg-4:       #1f1f26;
-    --gold:       #c9a84c;
-    --gold-lt:    #e0c06a;
-    --gold-dim:   rgba(201,168,76,.18);
-    --gold-border:rgba(201,168,76,.22);
+    --orange:       #ff9500;
+    --orange-lt:    #fd9800;
+    --orange-dim:   rgba(255, 123, 0, 0.18);
+    --orange-border:rgba(201,168,76,.22);
     --text:       #f2ede6;
     --text-2:     #a09890;
     --text-3:     #5c5650;
-    --border:     rgba(255,255,255,.07);
-    --border-2:   rgba(255,255,255,.12);
+    --border:     rgb(252, 171, 232);
+    --border-2:   rgb(98, 210, 106);
+    --border-3:   rgb(255, 255, 255);
     --white:      #ffffff;
     --danger:     #e05a5a;
 
@@ -37,7 +31,7 @@
 
     --shadow-sm: 0 2px 12px rgba(0,0,0,.5);
     --shadow-md: 0 6px 32px rgba(0,0,0,.6);
-    --shadow-gold: 0 4px 24px rgba(201,168,76,.15);
+    --shadow-orange: 0 4px 24px rgba(201,168,76,.15);
 }
 
 /* ─── RESET ────────────────────────────────────────────────────── */
@@ -80,7 +74,7 @@ body {
 ::-webkit-scrollbar       { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg-2); }
 ::-webkit-scrollbar-thumb { background: var(--text-3); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+::-webkit-scrollbar-thumb:hover { background: var(--orange); }
 
 /* ─── HEADER ───────────────────────────────────────────────────── */
 .site-header {
@@ -114,7 +108,7 @@ body {
     width: 34px;
     height: 34px;
     border-radius: 8px;
-    background: var(--gold);
+    background: var(--orange);
     color: var(--bg);
     font-family: var(--ff-display);
     font-weight: 700;
@@ -164,8 +158,8 @@ body {
     align-items: center;
     gap: .45rem;
     background: transparent;
-    border: 1px solid var(--gold-border);
-    color: var(--gold);
+    border: 1px solid var(--orange-border);
+    color: var(--orange);
     font-family: var(--ff-body);
     font-size: .82rem;
     font-weight: 500;
@@ -176,9 +170,9 @@ body {
     transition: all var(--t) var(--ease);
 }
 .btn-hlogin:hover {
-    background: var(--gold);
+    background: var(--orange);
     color: var(--bg);
-    border-color: var(--gold);
+    border-color: var(--orange);
 }
 .btn-hlogin svg { opacity: .8; }
 
@@ -195,7 +189,7 @@ body {
 .user-chip-avatar {
     width: 28px; height: 28px;
     border-radius: 50%;
-    background: var(--gold);
+    background: var(--orange);
     color: var(--bg);
     font-weight: 700;
     font-size: .85rem;
@@ -207,7 +201,7 @@ body {
 .user-chip-name  { font-weight: 500; font-size: .85rem; color: var(--text); }
 .user-chip-role  {
     font-size: .7rem; font-weight: 600; text-transform: uppercase;
-    letter-spacing: .06em; color: var(--gold); border: 1px solid var(--gold-border);
+    letter-spacing: .06em; color: var(--orange); border: 1px solid var(--orange-border);
     padding: 1px 7px; border-radius: 999px;
 }
 .chip-logout {
@@ -258,7 +252,7 @@ body {
 .login-close:hover { color: var(--text); border-color: var(--border-2); }
 .login-eyebrow {
     font-size: .75rem; font-weight: 600; text-transform: uppercase;
-    letter-spacing: .1em; color: var(--gold); margin-top: 2rem;
+    letter-spacing: .1em; color: var(--orange); margin-top: 2rem;
 }
 .login-title {
     font-family: var(--ff-display);
@@ -278,7 +272,7 @@ body {
 }
 .btn-login-submit {
     width: 100%;
-    background: var(--gold);
+    background: var(--orange);
     color: var(--bg);
     font-family: var(--ff-body);
     font-weight: 600;
@@ -312,11 +306,10 @@ body {
     outline: none;
     transition: border-color var(--t), box-shadow var(--t);
     resize: vertical;
-    -webkit-appearance: none;
 }
 .field-input::placeholder { color: var(--text-3); }
 .field-input:focus {
-    border-color: var(--gold);
+    border-color: var(--orange);
     box-shadow: 0 0 0 3px rgba(201,168,76,.12);
 }
 .field-input option { background: var(--bg-2); }
@@ -372,14 +365,14 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .14em;
-    color: var(--gold);
+    color: var(--orange);
     margin-bottom: 1.25rem;
 }
 .eyebrow-line {
     display: block;
     height: 1px;
     width: 28px;
-    background: var(--gold);
+    background: var(--orange);
     opacity: .5;
 }
 
@@ -394,7 +387,7 @@ body {
 }
 .hero-title em {
     font-style: italic;
-    background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+    background: linear-gradient(135deg, var(--orange), var(--orange-lt));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -417,7 +410,7 @@ body {
 
 /* Buttons */
 .btn-cta-primary {
-    background: var(--gold);
+    background: var(--orange);
     color: var(--bg);
     font-family: var(--ff-body);
     font-weight: 600;
@@ -428,7 +421,7 @@ body {
     border-radius: var(--r-sm);
     cursor: pointer;
     transition: opacity var(--t), transform var(--t), box-shadow var(--t);
-    box-shadow: var(--shadow-gold);
+    box-shadow: var(--shadow-orange);
 }
 .btn-cta-primary:hover {
     opacity: .88;
@@ -500,7 +493,7 @@ body {
 /* ─── ADMIN PANEL ──────────────────────────────────────────────── */
 .admin-panel {
     background: var(--bg-2);
-    border: 1px solid var(--gold-border);
+    border: 1px solid var(--orange-border);
     border-radius: var(--r-lg);
     overflow: hidden;
     margin-bottom: 2rem;
@@ -511,7 +504,7 @@ body {
     gap: .75rem;
     padding: .9rem 1.4rem;
     background: var(--bg-3);
-    border-bottom: 1px solid var(--gold-border);
+    border-bottom: 1px solid var(--orange-border);
 }
 .admin-panel-head h3 {
     font-family: var(--ff-display);
@@ -525,7 +518,7 @@ body {
     letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--bg);
-    background: var(--gold);
+    background: var(--orange);
     padding: 2px 8px;
     border-radius: 999px;
 }
@@ -585,8 +578,8 @@ body {
     border-color: var(--border-2);
 }
 .filter-pill.active {
-    background: var(--gold);
-    border-color: var(--gold);
+    background: var(--orange);
+    border-color: var(--orange);
     color: var(--bg);
     font-weight: 600;
 }
@@ -609,7 +602,7 @@ body {
 .loader-ring {
     width: 36px; height: 36px;
     border: 2px solid var(--bg-4);
-    border-top-color: var(--gold);
+    border-top-color: var(--orange);
     border-radius: 50%;
     animation: spin .7s linear infinite;
 }
@@ -662,7 +655,7 @@ body {
     letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--bg);
-    background: var(--gold);
+    background: var(--orange);
     padding: 2px 9px;
     border-radius: 999px;
 }
@@ -704,7 +697,7 @@ body {
     font-family: var(--ff-display);
     font-weight: 600;
     font-size: 1.2rem;
-    color: var(--gold);
+    color: var(--orange);
     letter-spacing: -.01em;
 }
 .pcard-rating {
@@ -714,13 +707,13 @@ body {
     font-size: .75rem;
     color: var(--text-3);
 }
-.stars { color: var(--gold-lt); letter-spacing: -.5px; font-size: .85rem; }
+.stars { color: var(--orange-lt); letter-spacing: -.5px; font-size: .85rem; }
 
 .pcard-btn {
     width: 100%;
     margin-top: .75rem;
     background: transparent;
-    border: 1px solid var(--border-2);
+    border: 1px solid var(--border);
     color: var(--text-2);
     font-family: var(--ff-body);
     font-size: .78rem;
@@ -732,8 +725,8 @@ body {
     transition: all var(--t);
 }
 .pcard-btn:hover {
-    background: var(--gold);
-    border-color: var(--gold);
+    background: var(--orange);
+    border-color: var(--orange);
     color: var(--bg);
 }
 
@@ -756,7 +749,7 @@ body {
     letter-spacing: .02em;
 }
 .btn-adm-edit { background: var(--bg-3); color: var(--text-2); }
-.btn-adm-edit:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+.btn-adm-edit:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-dim); }
 .btn-adm-del  { background: var(--bg-3); color: var(--text-3); }
 .btn-adm-del:hover  { border-color: var(--danger); color: var(--danger); background: rgba(224,90,90,.1); }
 
@@ -854,7 +847,7 @@ body {
     font-family: var(--ff-display);
     font-weight: 600;
     font-size: 2rem;
-    color: var(--gold);
+    color: var(--orange);
     letter-spacing: -.03em;
     line-height: 1;
     margin: .5rem 0 1rem;
@@ -882,10 +875,10 @@ body {
     border: 1px solid var(--border-2);
     color: var(--text-2);
 }
-.detail-pill.gold {
-    background: var(--gold-dim);
-    border-color: var(--gold-border);
-    color: var(--gold-lt);
+.detail-pill.orange {
+    background: var(--orange-dim);
+    border-color: var(--orange-border);
+    color: var(--orange-lt);
 }
 
 /* Reviews */
@@ -904,13 +897,13 @@ body {
 }
 .review-card {
     background: var(--bg-3);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-2);
     border-radius: var(--r-md);
     padding: 1rem 1.15rem;
     margin-bottom: .75rem;
     transition: border-color var(--t);
 }
-.review-card:hover { border-color: var(--border-2); }
+
 .review-card-top {
     display: flex;
     align-items: center;
@@ -1032,7 +1025,7 @@ body {
     opacity: .7;
 }
 .chat-bubble.from-self {
-    background: var(--gold);
+    background: var(--orange);
     color: var(--bg);
     align-self: flex-end;
     border-bottom-right-radius: 3px;
@@ -1040,7 +1033,7 @@ body {
 .chat-bubble.from-self .chat-bubble-meta { color: rgba(12,12,14,.7); }
 .chat-bubble.from-admin {
     background: var(--bg-4);
-    border: 1px solid var(--gold-border);
+    border: 1px solid var(--orange-border);
     color: var(--text);
     align-self: flex-start;
     border-bottom-left-radius: 3px;
@@ -1056,7 +1049,7 @@ body {
     font-size: .6rem;
     font-weight: 700;
     letter-spacing: .08em;
-    background: var(--gold);
+    background: var(--orange);
     color: var(--bg);
     padding: 1px 6px;
     border-radius: 999px;
@@ -1085,10 +1078,10 @@ body {
     transition: border-color var(--t);
 }
 .chat-field::placeholder { color: var(--text-3); }
-.chat-field:focus { border-color: var(--gold); }
+.chat-field:focus { border-color: var(--orange); }
 .chat-send-btn {
     width: 34px; height: 34px;
-    background: var(--gold);
+    background: var(--orange);
     color: var(--bg);
     border: none;
     border-radius: var(--r-sm);
@@ -1149,4 +1142,25 @@ body {
 }
 @media (max-width: 420px) {
     .product-grid { grid-template-columns: 1fr; }
+}
+
+.review-section {
+    background: var(--bg-3);
+    padding: 20px;
+    border-radius: var(--r-md);
+    border: 1px solid var(--border-3);
+}
+
+.review-item {
+    padding: 15px 0;
+    border-bottom: 1px solid var(--orange-dim);
+}
+
+.review-item:last-child {
+    border-bottom: none;
+}
+
+.review-stars {
+    color: var(--orange);
+    margin-right: 10px;
 }

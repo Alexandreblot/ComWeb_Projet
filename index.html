@@ -114,19 +114,24 @@
                     <h3>Nouveau produit</h3>
                 </div>
                 <form id="form-add-product" class="admin-grid">
-                    <input  type="text"   class="field-input" id="product-name"     placeholder="Nom du produit">
-                    <input  type="number" class="field-input" id="product-price"    placeholder="Prix (€)" step="0.01">
-                    <select              class="field-input" id="product-category">
-                        <option value="">Catégorie…</option>
-                        <option value="plushies">Peluches</option>
-                        <option value="goodies">Accessoires</option>
-                        <option value="posters">Posters</option>
-                        <option value="figures">Figurines</option>
-                    </select>
-                    <input  type="number" class="field-input" id="product-stock"    placeholder="Stock">
-                    <textarea            class="field-input col-span-2" id="product-desc" rows="2" placeholder="Description…"></textarea>
-                    <button type="submit" class="btn-cta-primary col-span-2">Enregistrer</button>
-                </form>
+        <input type="text" class="field-input" id="product-name" placeholder="Nom du produit" required>
+        <input type="number" class="field-input" id="product-price" placeholder="Prix (€)" step="0.01" required>
+            <select class="field-input" id="product-category" required>
+            <option value="">Catégorie…</option>
+            <option value="plushies">Peluches</option>
+            <option value="goodies">Accessoires</option>
+            <option value="posters">Posters</option>
+            <option value="figures">Figurines</option>
+            </select>
+            <input type="number" class="field-input" id="product-stock" placeholder="Stock" required>
+            <input type="text" class="field-input col-span-2" id="product-image" placeholder="URL de l'image (ex: img/nom.jpg)">
+            <textarea class="field-input col-span-2" id="product-desc" rows="2" placeholder="Description…"></textarea>
+    
+    <div class="col-span-2 d-flex gap-2">
+        <button type="submit" class="btn-cta-primary flex-grow-1" id="admin-submit-btn">Enregistrer</button>
+        <button type="button" class="btn-cta-outline d-none" id="btn-cancel-edit" onclick="cancelEdit()">Annuler</button>
+    </div>
+</form>
             </div>
 
             <!-- CATALOGUE HEADER -->
@@ -152,15 +157,57 @@
             </div>
 
             <!-- DÉTAIL PRODUIT -->
-            <div class="section-divider" id="detail-divider"></div>
-            <section id="product-detail">
-                <div class="detail-placeholder" id="detail-content">
-                    <div class="detail-placeholder-inner">
-                        <span class="detail-placeholder-icon">◈</span>
-                        <p>Cliquez sur un produit pour afficher son détail.</p>
+             <div class="section-divider" id="detail-divider"></div>
+<section id="product-detail">
+    <div class="detail-placeholder" id="detail-content">
+        <div class="detail-placeholder-inner">
+            <span class="detail-placeholder-icon">◈</span>
+            <p>Cliquez sur un produit pour afficher son détail.</p>
+        </div>
+    </div>
+
+    <div id="product-info-display" class="d-none p-4">
+        <div id="product-info-header"></div>
+        
+        <hr class="my-4 text-secondary">
+
+        <div class="review-section">
+            <h4 class="mb-3 ff-display">Laisser un avis</h4>
+            
+            <div id="review-form-container">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted text-uppercase">Note</label>
+                        <select id="review-rating" class="form-select bg-dark text-white border-secondary">
+                            <option value="5">★★★★★ (5/5)</option>
+                            <option value="4">★★★★☆ (4/5)</option>
+                            <option value="3">★★★☆☆ (3/5)</option>
+                            <option value="2">★★☆☆☆ (2/5)</option>
+                            <option value="1">★☆☆☆☆ (1/5)</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small text-muted text-uppercase">Commentaire</label>
+                        <textarea id="review-comment" class="form-control bg-dark text-white border-secondary" rows="3" placeholder="Votre expérience..."></textarea>
                     </div>
                 </div>
-            </section>
+                <button type="button" id="btn-submit-review" class="btn btn-warning w-100 fw-bold">
+                    PUBLIER L'AVIS
+                </button>
+            </div>
+
+            <p id="review-login-msg" class="text-muted small d-none italic">
+                Connectez-vous pour laisser un avis sur ce produit.
+            </p>
+
+            <div class="mt-5">
+                <h5 class="ff-display border-bottom border-secondary pb-2">Avis clients</h5>
+                <div id="reviews-list" class="mt-3">
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
 
         </div>
 

@@ -5,6 +5,8 @@
    ================================================================ */
 
 const API_BASE = 'php/';
+let isEditing = false;
+let editId = null;
 
 // ── Globals ──────────────────────────────────────────────────────
 window.userToken = null;
@@ -162,14 +164,26 @@ function loadProductDetail(productId) {
 
 function renderDetail(p) {
     const el = document.getElementById('detail-content');
-    el.className = 'detail-wrap';
+    const infoDisplay = document.getElementById('product-info-display');
 
-    const reviewFormHtml = window.userRole === 'client' ? `
-        <div class="review-form">
+    // On s'assure d'afficher le conteneur principal
+    el.classList.remove('d-none');
+    el.className = 'detail-wrap';
+    
+    // On cache la version "Bootstrap" si elle est présente pour éviter les doublons
+    if (infoDisplay) infoDisplay.classList.add('d-none');
+
+    // Construction des badges (pills)
+    const dimensionsHtml = p.dimensions ? `<span class="detail-pill">📐 ${p.dimensions}</span>` : '';
+    const stockHtml = `<span class="detail-pill ${p.stock > 0 ? 'gold' : ''}">Stock : ${p.stock}</span>`;
+    const ratingHtml = `<span class="detail-pill gold">${renderStars(p.average_rating)}</span>`;
+
+    // Le formulaire d'avis (uniquement si connecté)
+    const reviewFormHtml = window.userToken ? `
+        <div class="review-form mt-4">
             <p class="review-form-title">Publier un avis</p>
             <div class="review-form-grid">
                 <select class="field-input" id="review-rating">
-                    <option value="">Note…</option>
                     <option value="5">★★★★★ — Excellent</option>
                     <option value="4">★★★★☆ — Bien</option>
                     <option value="3">★★★☆☆ — Correct</option>
@@ -177,43 +191,45 @@ function renderDetail(p) {
                     <option value="1">★☆☆☆☆ — Mauvais</option>
                 </select>
                 <textarea class="field-input" id="review-comment" rows="2" placeholder="Votre commentaire…"></textarea>
-                <button class="btn-cta-primary" onclick="submitReview(${p.id})" style="width:auto;align-self:start">Publier l'avis</button>
+                <button class="btn-cta-primary" onclick="submitReview(${p.id})">Publier l'avis</button>
             </div>
-        </div>` : '';
+        </div>` : `<p class="text-muted small mt-4 italic">Connectez-vous pour laisser un avis.</p>`;
 
     el.innerHTML = `
         <div class="detail-header">
             <div>
-                <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:.3rem">${catLabel(p.category)}</div>
+                <div style="font-size:.72rem;text-transform:uppercase;color:var(--text-3);">${catLabel(p.category)}</div>
                 <h3 class="detail-header-title">${p.name}</h3>
             </div>
-            <button class="detail-header-back" onclick="document.getElementById('detail-content').innerHTML='<div class=detail-placeholder><div class=detail-placeholder-inner><span class=detail-placeholder-icon>◈</span><p>Sélectionnez un produit pour en voir le détail.</p></div></div>'">
-                ← Retour
-            </button>
+            <button class="detail-header-back" onclick="location.reload()">← Retour</button>
         </div>
 
         <div class="detail-body">
-            <div>
-                <img class="detail-img" src="${p.image}" alt="${p.name}"
-                     onerror="this.src='img/tachyon_idle.jpeg'">
+            <div class="detail-img-container">
+                <img class="detail-img" src="${p.image}" onerror="this.src='img/tachyon_idle.jpeg'">
             </div>
-            <div>
+            <div class="detail-info">
                 <div class="detail-price">${fmtPrice(p.price)}</div>
                 <p class="detail-desc">${p.description}</p>
                 <div class="detail-pills">
-                    <span class="detail-pill gold">${catLabel(p.category)}</span>
-                    <span class="detail-pill">Stock : ${p.stock}</span>
-                    ${p.dimensions ? `<span class="detail-pill">📐 ${p.dimensions}</span>` : ''}
-                    ${p.average_rating ? `<span class="detail-pill gold">${renderStars(p.average_rating)}</span>` : ''}
+                    ${stockHtml}
+                    ${dimensionsHtml}
+                    ${ratingHtml}
                 </div>
-                <div id="reviews-section"><p style="color:var(--text-3);font-size:.82rem">Chargement des avis…</p></div>
+                
+                <hr class="border-secondary my-4" style="opacity:0.1">
+                
+                <div id="reviews-section">
+                    <p style="color:var(--text-3);font-size:.82rem">Chargement des avis...</p>
+                </div>
+
                 ${reviewFormHtml}
             </div>
         </div>`;
 
+    // On lance le chargement des avis dans le conteneur qu'on vient de créer
     loadReviews(p.id);
 }
-
 // ── Avis ──────────────────────────────────────────────────────────
 
 function loadReviews(productId) {
@@ -228,7 +244,7 @@ function renderReviews(reviews, productId) {
 
     if (!reviews || reviews.length === 0) {
         sec.innerHTML = `<p class="reviews-heading">Avis clients</p>
-            <p style="color:var(--text-3);font-size:.82rem">Aucun avis pour ce produit.</p>`;
+                         <p style="color:var(--text-3);font-size:.82rem;font-style:italic">Aucun avis pour le moment.</p>`;
         return;
     }
 
@@ -243,7 +259,7 @@ function renderReviews(reviews, productId) {
         </div>`).join('');
 
     sec.innerHTML = `<p class="reviews-heading">Avis clients (${reviews.length})</p>${html}`;
-}
+}  
 
 function submitReview(productId) {
     const rating  = document.getElementById('review-rating')?.value;
@@ -262,7 +278,8 @@ function submitReview(productId) {
     .then(() => {
         document.getElementById('review-comment').value = '';
         document.getElementById('review-rating').value  = '';
-        loadReviews(productId);
+        loadReviews(productId); // Rafraîchit la liste des avis
+        requestProducts(); // Optionnel : rafraîchit le catalogue pour la note moyenne
     });
 }
 
@@ -360,11 +377,15 @@ function addProduct() {
         price:       document.getElementById('product-price')?.value,
         category:    document.getElementById('product-category')?.value,
         stock:       document.getElementById('product-stock')?.value,
+        image:       document.getElementById('product-image')?.value?.trim(), // Ajouté
     };
+    
     if (!body.name || !body.price || !body.category) return;
 
-    fetch(`${API_BASE}products.php`, {
-        method: 'POST',
+    const method = isEditing ? 'PUT' : 'POST';
+    const url = isEditing ? `${API_BASE}products.php?id=${editId}` : `${API_BASE}products.php`;
+    fetch(url, {
+        method: method,
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${window.userToken || ''}`
@@ -374,7 +395,8 @@ function addProduct() {
     .then(r => r.json())
     .then(() => {
         document.getElementById('form-add-product')?.reset();
-        requestProducts();
+        cancelEdit(); 
+        requestProducts(); // Rafraîchissement automatique
     });
 }
 
@@ -463,4 +485,36 @@ function appendBubble(login, text, type) {
     div.innerHTML = `<div class="chat-bubble-meta">${login}${badge} · ${time}</div>${text}`;
     box.appendChild(div);
     box.scrollTop = box.scrollHeight;
+}
+
+function openEditProduct(productId) {
+    isEditing = true;
+    editId = productId;
+
+    // Afficher le bouton annuler
+    document.getElementById('btn-cancel-edit')?.classList.remove('d-none');
+    const btn = document.getElementById('admin-submit-btn');
+    if (btn) btn.textContent = "Mettre à jour le produit";
+
+    fetch(`${API_BASE}product.php?id=${productId}`)
+        .then(r => r.json())
+        .then(p => {
+            document.getElementById('product-name').value = p.name;
+            document.getElementById('product-desc').value = p.description;
+            document.getElementById('product-price').value = p.price;
+            document.getElementById('product-category').value = p.category;
+            document.getElementById('product-stock').value = p.stock;
+            document.getElementById('product-image').value = p.image; // Ajouté
+            
+            document.getElementById('admin-form').scrollIntoView({ behavior: 'smooth' });
+        });
+}
+
+function cancelEdit() {
+    isEditing = false;
+    editId = null;
+    document.getElementById('form-add-product')?.reset();
+    document.getElementById('btn-cancel-edit')?.classList.add('d-none');
+    const btn = document.getElementById('admin-submit-btn');
+    if (btn) btn.textContent = "Enregistrer le produit";
 }
