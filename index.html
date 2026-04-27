@@ -113,18 +113,11 @@
                     <span class="tag-admin">ADMIN</span>
                     <h3>Nouveau produit</h3>
                 </div>
-<<<<<<< HEAD
-<!-- Menu de filtrage -->
-                <div class="mb-3">
-                    <select class="form-select w-auto" onchange="requestProducts(this.value)">
-                        <option value="">Toutes les catégories</option>
-=======
                 <form id="form-add-product" class="admin-grid">
                     <input  type="text"   class="field-input" id="product-name"     placeholder="Nom du produit">
                     <input  type="number" class="field-input" id="product-price"    placeholder="Prix (€)" step="0.01">
                     <select              class="field-input" id="product-category">
                         <option value="">Catégorie…</option>
->>>>>>> 4b8600c97766a05296fdb52dcee6ffa15024f0c7
                         <option value="plushies">Peluches</option>
                         <option value="goodies">Accessoires</option>
                         <option value="posters">Posters</option>
@@ -142,22 +135,6 @@
                     <h2 class="section-heading">Catalogue</h2>
                     <span class="product-count-label" id="product-count"></span>
                 </div>
-<<<<<<< HEAD
-            
-<!-- Grille produits -->
-            <h2 class="mb-3">Notre Catalogue</h2>
-            <div class="row g-3" id="product-grid"></div>
-
-            <hr class="my-5">
-
-<!-- Sections détails -->
-            <section id="product-detail" class="mt-4">
-                <div class="card">
-                    <div class="card-header bg-orange text-white">Détails du produit</div>
-                        <div class="card-body" id="detail-content">
-                            <p class="text-muted">Cliquez sur un produit ci-dessus pour voir ses avis.</p>
-                        </div>
-=======
                 <div class="filter-bar">
                     <button class="filter-pill active" data-cat="" onclick="setFilter(this, '')">Tout</button>
                     <button class="filter-pill" data-cat="plushies" onclick="setFilter(this, 'plushies')">Peluches</button>
@@ -181,7 +158,6 @@
                     <div class="detail-placeholder-inner">
                         <span class="detail-placeholder-icon">◈</span>
                         <p>Cliquez sur un produit pour afficher son détail.</p>
->>>>>>> 4b8600c97766a05296fdb52dcee6ffa15024f0c7
                     </div>
                 </div>
             </section>

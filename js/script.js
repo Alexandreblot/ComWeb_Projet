@@ -73,23 +73,6 @@ function requestProducts(category = null) {
     grid.innerHTML = '<div class="grid-loader"><div class="loader-ring"></div></div>';
 
     fetch(url)
-<<<<<<< HEAD
-        .then(res => res.json())
-        .then(data => displayProducts(data));
-}
-
-function loadProductDetail(productId) {
-    fetch(`php/product.php?id=${productId}`)
-        .then(res => res.json())
-        .then(product => {
-            document.getElementById('detail-content').textContent = product.name;
-            
-            const imgEl = document.getElementById('detail-img');    //à ajouter dans le html (n'existe pas)
-            imgEl.src = product.image; 
-            imgEl.onerror = () => imgEl.src = 'img/tachyon_idle.jpeg';
-
-            displayReviews(productId);
-=======
         .then(r => { if (!r.ok) throw new Error(); return r.json(); })
         .then(data => displayProducts(data))
         .catch(() => {
@@ -97,7 +80,6 @@ function loadProductDetail(productId) {
                 <div class="grid-empty-icon">⚠</div>
                 <p>Impossible de charger le catalogue.</p>
             </div>`;
->>>>>>> 4b8600c97766a05296fdb52dcee6ffa15024f0c7
         });
 }
 
@@ -154,15 +136,10 @@ function displayProducts(products) {
 
 // ── Filtre ────────────────────────────────────────────────────────
 
-<<<<<<< HEAD
-function displayReviews(productId) {
-    requestReviews(productId); //temporaire
-=======
 function setFilter(btn, category) {
     document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     requestProducts(category || null);
->>>>>>> 4b8600c97766a05296fdb52dcee6ffa15024f0c7
 }
 
 function scrollToCatalogue() {
