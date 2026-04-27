@@ -19,12 +19,12 @@ function requestProducts(category = null) {
 }
 
 function loadProductDetail(productId) {
-    fetch(`backend/product.php?id=${productId}`)
+    fetch(`php/product.php?id=${productId}`)
         .then(res => res.json())
         .then(product => {
-            document.getElementById('detail-title').textContent = product.name;
+            document.getElementById('detail-content').textContent = product.name;
             
-            const imgEl = document.getElementById('detail-img');
+            const imgEl = document.getElementById('detail-img');    //à ajouter dans le html (n'existe pas)
             imgEl.src = product.image; 
             imgEl.onerror = () => imgEl.src = 'img/tachyon_idle.jpeg';
 
@@ -61,6 +61,11 @@ function displayProducts(products) {
 }
 
 
+function displayReviews(productId) {
+    requestReviews(productId); //temporaire
+}
+
+
 function requestProduct(id) {
     fetch(API_BASE + 'product.php?id=' + id)
         .then(res => res.json())
@@ -73,7 +78,4 @@ function requestReviews(id) {
         .then(data => console.log(data));
 }
 
-function displayProducts(products) {
-    console.log(products); // pour test S2
-}
 
