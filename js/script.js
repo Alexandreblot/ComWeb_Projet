@@ -332,7 +332,6 @@ function login() {
 function onLoginSuccess(loginVal, role) {
     toggleLoginPanel();
 
-    // Chip utilisateur
     const chip = document.getElementById('user-chip');
     if (chip) {
         chip.classList.remove('d-none');
@@ -341,15 +340,13 @@ function onLoginSuccess(loginVal, role) {
         document.getElementById('chip-role').textContent   = role;
     }
 
-    // Masquer le bouton connexion
+
     document.getElementById('btn-open-login')?.classList.add('d-none');
 
-    // Formulaire admin
     if (role === 'admin') {
         document.getElementById('admin-form')?.classList.remove('d-none');
     }
 
-    // Recharger le catalogue
     requestProducts();
 }
 
@@ -396,7 +393,7 @@ function addProduct() {
     .then(() => {
         document.getElementById('form-add-product')?.reset();
         cancelEdit(); 
-        requestProducts(); // Rafraîchissement automatique
+        requestProducts(); 
     });
 }
 
@@ -408,90 +405,13 @@ function confirmDelete(productId) {
     }).then(() => requestProducts());
 }
 
-function openEditProduct(productId) {
-    // À implémenter : préremplir le formulaire admin et passer en mode PUT
-    console.log('Edit product', productId);
-}
 
 // ── Chat WebSocket ────────────────────────────────────────────────
-
-let ws = null;
-
-function connectWebSocket(ip, port = 12345) {
-    try {
-        ws = new WebSocket(`ws://${ip}:${port}`);
-
-        ws.addEventListener('open', () => setWsStatus(true));
-        ws.addEventListener('close', () => setWsStatus(false));
-        ws.addEventListener('message', e => {
-            try {
-                const msg = JSON.parse(e.data);
-                if (msg.login !== window.userLogin) {
-                    appendBubble(msg.login, msg.message, msg.role === 'admin' ? 'admin' : 'client');
-                }
-            } catch { /* ignore */ }
-        });
-    } catch(err) {
-        console.warn('WebSocket connection failed', err);
-    }
-}
-
-function setWsStatus(online) {
-    const dot   = document.querySelector('.ws-dot');
-    const badge = document.getElementById('ws-indicator');
-    if (!dot || !badge) return;
-    if (online) {
-        dot.classList.remove('offline');
-        badge.innerHTML = '<span class="ws-dot"></span>En ligne';
-    } else {
-        badge.innerHTML = '<span class="ws-dot offline"></span>Hors ligne';
-    }
-}
-
-function sendMessage() {
-    const input = document.getElementById('chat-input');
-    const text  = input?.value?.trim();
-    if (!text) return;
-
-    appendBubble(window.userLogin || 'Vous', text, 'self');
-
-    if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-            login:   window.userLogin || 'Visiteur',
-            message: text,
-            role:    window.userRole  || 'client'
-        }));
-    }
-
-    input.value = '';
-}
-
-function appendBubble(login, text, type) {
-    const box     = document.getElementById('chat-box');
-    const welcome = box?.querySelector('.chat-welcome');
-    if (welcome) welcome.remove();
-
-    const time  = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-    const badge = type === 'admin'
-        ? ` <span class="admin-badge-tag">ADMIN</span>`
-        : '';
-
-    const cls = type === 'self'  ? 'from-self'
-              : type === 'admin' ? 'from-admin'
-              :                    'from-client';
-
-    const div = document.createElement('div');
-    div.className = `chat-bubble ${cls}`;
-    div.innerHTML = `<div class="chat-bubble-meta">${login}${badge} · ${time}</div>${text}`;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-}
 
 function openEditProduct(productId) {
     isEditing = true;
     editId = productId;
 
-    // Afficher le bouton annuler
     document.getElementById('btn-cancel-edit')?.classList.remove('d-none');
     const btn = document.getElementById('admin-submit-btn');
     if (btn) btn.textContent = "Mettre à jour le produit";
