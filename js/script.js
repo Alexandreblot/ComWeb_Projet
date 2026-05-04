@@ -408,10 +408,6 @@ function confirmDelete(productId) {
         headers: { 'Authorization': `Bearer ${window.userToken || ''}` }
     }).then(() => requestProducts());
 }
-
-
-// ── Chat WebSocket ────────────────────────────────────────────────
-
 function openEditProduct(productId) {
     isEditing = true;
     editId = productId;
@@ -433,84 +429,6 @@ function openEditProduct(productId) {
             document.getElementById('admin-form').scrollIntoView({ behavior: 'smooth' });
         });
 }
-
-<<<<<<< HEAD
-=======
-function setWsStatus(online) {
-    const dot   = document.querySelector('.ws-dot');
-    const badge = document.getElementById('ws-indicator');
-    if (!dot || !badge) return;
-    if (online) {
-        dot.classList.remove('offline');
-        badge.innerHTML = '<span class="ws-dot"></span>En ligne';
-    } else {
-        badge.innerHTML = '<span class="ws-dot offline"></span>Hors ligne';
-    }
-}
-
-function sendMessage() {
-    const input = document.getElementById('chat-input');
-    const text  = input?.value?.trim();
-    if (!text) return;
-
-    appendBubble(window.userLogin || 'Vous', text, 'self');
-
-    if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-            login:   window.userLogin || 'Visiteur',
-            message: text,
-            role:    window.userRole  || 'client'
-        }));
-    }
-
-    input.value = '';
-}
-
-function appendBubble(login, text, type) {
-    const box     = document.getElementById('chat-box');
-    const welcome = box?.querySelector('.chat-welcome');
-    if (welcome) welcome.remove();
-
-    const time  = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-    const badge = type === 'admin'
-        ? ` <span class="admin-badge-tag">ADMIN</span>`
-        : '';
-
-    const cls = type === 'self'  ? 'from-self'
-              : type === 'admin' ? 'from-admin'
-              :                    'from-client';
-
-    const div = document.createElement('div');
-    div.className = `chat-bubble ${cls}`;
-    div.innerHTML = `<div class="chat-bubble-meta">${login}${badge} · ${time}</div>${text}`;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-}
-
-function openEditProduct(productId) {
-    isEditing = true;
-    editId = productId;
-
-    // Afficher le bouton annuler
-    document.getElementById('btn-cancel-edit')?.classList.remove('d-none');
-    const btn = document.getElementById('admin-submit-btn');
-    if (btn) btn.textContent = "Mettre à jour le produit";
-
-    fetch(`${API_BASE}product.php?id=${productId}`)
-        .then(r => r.json())
-        .then(p => {
-            document.getElementById('product-name').value = p.name;
-            document.getElementById('product-desc').value = p.description;
-            document.getElementById('product-price').value = p.price;
-            document.getElementById('product-category').value = p.category;
-            document.getElementById('product-stock').value = p.stock;
-            document.getElementById('product-image').value = p.image; // Ajouté
-            
-            document.getElementById('admin-form').scrollIntoView({ behavior: 'smooth' });
-        });
-}
-
->>>>>>> 57a77b10a9caefe7d1e82c7c5cc1a3bae7a56837
 function cancelEdit() {
     isEditing = false;
     editId = null;
