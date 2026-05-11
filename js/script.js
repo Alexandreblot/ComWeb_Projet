@@ -393,11 +393,7 @@ function addProduct() {
     .then(() => {
         document.getElementById('form-add-product')?.reset();
         cancelEdit(); 
-<<<<<<< HEAD
-        requestProducts(); 
-=======
         requestProducts(); // Rafraîchissement automatique
->>>>>>> 57a77b10a9caefe7d1e82c7c5cc1a3bae7a56837
     });
 }
 

@@ -2,6 +2,7 @@
 
 header('Content-Type: application/json');
 require_once 'db.php';
+require_once 'auth.php';
 
 $db = dbConnect();
 $method = $_SERVER['REQUEST_METHOD'];
@@ -11,12 +12,12 @@ switch ($method) {
     // ───────────────────────────── GET ─────────────────────────────
     case 'GET':
         $productId = $_GET['id'] ?? null;
-
-        if (!$productId) {
+        if (!$productId || !is_numeric($productId)) {
             http_response_code(400);
-            echo json_encode(["error" => "Missing productId"]);
+            echo json_encode(["error" => "Invalid productId"]);
             exit();
         }
+        $productId = intval($productId);
 
         $stmt = $db->prepare("
             SELECT userLogin, rating, comment, created_at
@@ -24,15 +25,19 @@ switch ($method) {
             WHERE productId = :id
             ORDER BY created_at DESC
         ");
+        $stmt->execute([
+            ':id' => $productId
+        ]);
 
-        $stmt->execute([':id' => $productId]);
+        http_response_code(200);
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         break;
 
     // ───────────────────────────── POST ─────────────────────────────
     case 'POST':
-        $data = json_decode(file_get_contents("php://input"), true);
+        $user = checkToken();
 
+        $data = json_decode(file_get_contents("php://input"), true);
         if (!$data) {
             http_response_code(400);
             echo json_encode(["error" => "Invalid JSON"]);
@@ -40,13 +45,15 @@ switch ($method) {
         }
 
         $stmt = $db->prepare("
-            INSERT INTO reviews (productId, userLogin, rating, comment)
-            VALUES (:productId, :userLogin, :rating, :comment)
+            INSERT INTO reviews
+            (productId, userLogin, rating, comment)
+            VALUES
+            (:productId, :userLogin, :rating, :comment)
         ");
 
         $stmt->execute([
             ':productId' => $data['productId'],
-            ':userLogin' => 'client1', // temporaire
+            ':userLogin' => $user['login'],
             ':rating' => $data['rating'],
             ':comment' => strip_tags($data['comment'])
         ]);
@@ -57,14 +64,31 @@ switch ($method) {
 
     // ───────────────────────────── PUT ─────────────────────────────
     case 'PUT':
+        $user = checkToken();
         parse_str($_SERVER['QUERY_STRING'], $params);
+
         $id = $params['id'] ?? null;
-
         $data = json_decode(file_get_contents("php://input"), true);
-
-        if (!$id || !$data) {
+        if (!$id || !is_numeric($id) || !$data) {
             http_response_code(400);
             echo json_encode(["error" => "Invalid request"]);
+            exit();
+        }
+        $id = intval($id);
+
+        $stmt = $db->prepare("
+            SELECT userLogin
+            FROM reviews
+            WHERE id = :id
+        ");
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        $review = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$review || $review['userLogin'] !== $user['login']) {
+            http_response_code(401);
+            echo json_encode(["error" => "Unauthorized"]);
             exit();
         }
 
@@ -81,23 +105,48 @@ switch ($method) {
             ':id' => $id
         ]);
 
+        http_response_code(200);
         echo json_encode(["success" => true]);
         break;
 
     // ───────────────────────────── DELETE ─────────────────────────────
     case 'DELETE':
+        $user = checkToken();
         parse_str($_SERVER['QUERY_STRING'], $params);
-        $id = $params['id'] ?? null;
 
-        if (!$id) {
+        $id = $params['id'] ?? null;
+        if (!$id || !is_numeric($id)) {
             http_response_code(400);
-            echo json_encode(["error" => "Missing id"]);
+            echo json_encode(["error" => "Invalid id"]);
+            exit();
+        }
+        $id = intval($id);
+
+        $stmt = $db->prepare("
+            SELECT userLogin
+            FROM reviews
+            WHERE id = :id
+        ");
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        $review = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$review || $review['userLogin'] !== $user['login']) {
+            http_response_code(401);
+            echo json_encode(["error" => "Unauthorized"]);
             exit();
         }
 
-        $stmt = $db->prepare("DELETE FROM reviews WHERE id = :id");
-        $stmt->execute([':id' => $id]);
+        $stmt = $db->prepare("
+            DELETE FROM reviews
+            WHERE id = :id
+        ");
+        $stmt->execute([
+            ':id' => $id
+        ]);
 
+        http_response_code(200);
         echo json_encode(["success" => true]);
         break;
 
