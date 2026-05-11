@@ -10,6 +10,8 @@ Boutique en Ligne Simplifiée
 | 🎨 Frontend          | Gabriel PANIEZ        | HTML, CSS, JS, AJAX, WebSocket              |
 | 🔀 Intégration & Git | Alexandre BLOT        | Git, branches, conflits, tests bout en bout |
 
+## But du projet
+
 Le but de ce projet est de créer un site web ecommerce fonctionnelle avec le web. Les Administrateurs gèrent le catalogue de produits. Les clients consultent, notent et commentent. Un **chat WebSocket** assure le support en temps réel.
 
 ## 📅 Avancement par séance
@@ -71,13 +73,13 @@ Le but de ce projet est de créer un site web ecommerce fonctionnelle avec le we
 
 > OAuth2 · Tokens · Rôles · PHP · JavaScript
 
-- [ ] Formulaire de connexion
-- [ ] Token et rôle stockés en variables globales
-- [ ] Header `Bearer` sur toutes les requêtes protégées
-- [ ] Interface différente selon le rôle (admin / client)
-- [ ] Route `POST /login/` retournant token ET rôle
-- [ ] Retour `401` si token invalide ou rôle insuffisant
-- [ ] Test parcours admin : ajout, modification, suppression produit
-- [ ] Test parcours client : avis uniquement
-- [ ] Token et rôle non exposés dans le HTML
-- [ ] Tag Git : `v5-oauth2`
+- [ok] Formulaire de connexion
+- [ok] Token et rôle stockés en variables globales
+- [ok] Header `Bearer` sur toutes les requêtes protégées
+- [ok] Interface différente selon le rôle (admin / client)
+- [ok] Route `POST /login/` retournant token ET rôle
+- [ok] Retour `401` si token invalide ou rôle insuffisant
+- [ok] Test parcours admin : ajout, modification, suppression produit
+- [ok] Test parcours client : avis uniquement
+- [ok] Token et rôle non exposés dans le HTML
+- [ok] Tag Git : `v5-oauth2`
