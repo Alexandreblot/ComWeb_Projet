@@ -5,7 +5,8 @@ ROLE : Frontend : Gabriel PANIEZ
 
 Le but de ce projet est de créer un site web ecommerce fonctionnelle avec le web
 
-Si jamais il bug, pour voir le projet il faut ce connecter au local host --> ctrl-shift-p pour ouvrir les ficher sur debian, puis "php -S localhost:8000" dans la console pour lancer le serveur local, ensuite aller sur le navigateur et taper "localhost:8000"
+Si jamais il bug, pour voir le projet il faut ce connecter au local host --> ctrl-shift-p pour ouvrir les ficher sur debian, puis "php -S localhost:8000" dans la console pour lancer le serveur local, ensuite aller sur le navigateur et taper "
+"
 
 Scéance 1 :
 Creation de tout les dossiers pour les différents fichier
