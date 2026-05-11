@@ -2,6 +2,7 @@
 
 header('Content-Type: application/json');
 require_once 'db.php';
+require_once 'auth.php';
 
 $db = dbConnect();
 $method = $_SERVER['REQUEST_METHOD'];
@@ -23,7 +24,6 @@ switch ($method) {
         if ($category) {
             $sql .= " WHERE p.category = :category";
         }
-
         $sql .= " GROUP BY p.id";
 
         $stmt = $db->prepare($sql);
@@ -31,15 +31,17 @@ switch ($method) {
         if ($category) {
             $stmt->bindParam(':category', $category);
         }
-
         $stmt->execute();
+
+        http_response_code(200);
         echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         break;
 
     // ───────────────────────────── POST ─────────────────────────────
     case 'POST':
-        $data = json_decode(file_get_contents("php://input"), true);
+        checkToken('admin');
 
+        $data = json_decode(file_get_contents("php://input"), true);
         if (!$data) {
             http_response_code(400);
             echo json_encode(["error" => "Invalid JSON"]);
@@ -47,8 +49,10 @@ switch ($method) {
         }
 
         $stmt = $db->prepare("
-            INSERT INTO products (name, description, price, category, stock)
-            VALUES (:name, :description, :price, :category, :stock)
+            INSERT INTO products
+            (name, description, price, category, stock, image)
+            VALUES
+            (:name, :description, :price, :category, :stock, :image)
         ");
 
         $stmt->execute([
@@ -56,7 +60,8 @@ switch ($method) {
             ':description' => strip_tags($data['description']),
             ':price' => $data['price'],
             ':category' => $data['category'],
-            ':stock' => $data['stock']
+            ':stock' => $data['stock'],
+            ':image' => strip_tags($data['image'])
         ]);
 
         http_response_code(201);
@@ -65,16 +70,23 @@ switch ($method) {
 
     // ───────────────────────────── PUT ─────────────────────────────
     case 'PUT':
+        checkToken('admin');
         parse_str($_SERVER['QUERY_STRING'], $params);
-        $id = $params['id'] ?? null;
 
-        if (!$id) {
+        $id = $params['id'] ?? null;
+        if (!$id || !is_numeric($id)) {
             http_response_code(400);
-            echo json_encode(["error" => "Missing id"]);
+            echo json_encode(["error" => "Invalid id"]);
             exit();
         }
+        $id = intval($id);
 
         $data = json_decode(file_get_contents("php://input"), true);
+        if (!$data) {
+            http_response_code(400);
+            echo json_encode(["error" => "Invalid JSON"]);
+            exit();
+        }
 
         $stmt = $db->prepare("
             UPDATE products
@@ -82,7 +94,8 @@ switch ($method) {
                 description = :description,
                 price = :price,
                 category = :category,
-                stock = :stock
+                stock = :stock,
+                image = :image
             WHERE id = :id
         ");
 
@@ -92,26 +105,36 @@ switch ($method) {
             ':price' => $data['price'],
             ':category' => $data['category'],
             ':stock' => $data['stock'],
+            ':image' => strip_tags($data['image']),
             ':id' => $id
         ]);
 
+        http_response_code(200);
         echo json_encode(["success" => true]);
         break;
 
     // ───────────────────────────── DELETE ─────────────────────────────
     case 'DELETE':
+        checkToken('admin');
         parse_str($_SERVER['QUERY_STRING'], $params);
-        $id = $params['id'] ?? null;
 
-        if (!$id) {
+        $id = $params['id'] ?? null;
+        if (!$id || !is_numeric($id)) {
             http_response_code(400);
-            echo json_encode(["error" => "Missing id"]);
+            echo json_encode(["error" => "Invalid id"]);
             exit();
         }
+        $id = intval($id);
 
-        $stmt = $db->prepare("DELETE FROM products WHERE id = :id");
-        $stmt->execute([':id' => $id]);
+        $stmt = $db->prepare("
+            DELETE FROM products
+            WHERE id = :id
+        ");
+        $stmt->execute([
+            ':id' => $id
+        ]);
 
+        http_response_code(200);
         echo json_encode(["success" => true]);
         break;
 
