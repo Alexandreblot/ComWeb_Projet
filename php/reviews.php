@@ -20,7 +20,7 @@ switch ($method) {
         $productId = intval($productId);
 
         $stmt = $db->prepare("
-            SELECT userLogin, rating, comment, created_at
+            SELECT id, userLogin, rating, comment, created_at
             FROM reviews
             WHERE productId = :id
             ORDER BY created_at DESC
@@ -35,7 +35,7 @@ switch ($method) {
 
     // ───────────────────────────── POST ─────────────────────────────
     case 'POST':
-        $user = checkToken();
+        $user = checkToken('client');
 
         $data = json_decode(file_get_contents("php://input"), true);
         if (!$data) {
@@ -64,7 +64,7 @@ switch ($method) {
 
     // ───────────────────────────── PUT ─────────────────────────────
     case 'PUT':
-        $user = checkToken();
+        $user = checkToken('client');
         parse_str($_SERVER['QUERY_STRING'], $params);
 
         $id = $params['id'] ?? null;
@@ -111,7 +111,7 @@ switch ($method) {
 
     // ───────────────────────────── DELETE ─────────────────────────────
     case 'DELETE':
-        $user = checkToken();
+        $user = checkToken('client');
         parse_str($_SERVER['QUERY_STRING'], $params);
 
         $id = $params['id'] ?? null;

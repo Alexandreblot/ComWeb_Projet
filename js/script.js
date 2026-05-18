@@ -178,8 +178,8 @@ function renderDetail(p) {
     const stockHtml = `<span class="detail-pill ${p.stock > 0 ? 'gold' : ''}">Stock : ${p.stock}</span>`;
     const ratingHtml = `<span class="detail-pill gold">${renderStars(p.average_rating)}</span>`;
 
-    // Le formulaire d'avis (uniquement si connecté)
-    const reviewFormHtml = window.userToken ? `
+    // Le formulaire d'avis (uniquement si client connecté)
+    const reviewFormHtml = (window.userToken && window.userRole === 'client') ? `
         <div class="review-form mt-4">
             <p class="review-form-title">Publier un avis</p>
             <div class="review-form-grid">
@@ -248,7 +248,19 @@ function renderReviews(reviews, productId) {
         return;
     }
 
-    const html = reviews.map(r => `
+    const html = reviews.map(r => {
+
+        const actions = (
+            window.userRole === 'client'
+            && window.userLogin === r.userLogin
+        ) ? `
+            <div class="review-actions">
+                <button class="btn-adm-edit" onclick="openEditReview(${r.id}, ${productId}, ${r.rating}, \`${r.comment.replace(/`/g, '\\`')}\`)"> Modifier </button>
+                <button class="btn-adm-del" onclick="deleteReview(${r.id}, ${productId})"> Supprimer </button>
+            </div>
+        ` : '';
+
+        return `
         <div class="review-card">
             <div class="review-card-top">
                 <span class="review-author">${r.userLogin}</span>
@@ -256,10 +268,12 @@ function renderReviews(reviews, productId) {
                 <span class="review-date">${fmtDate(r.created_at)}</span>
             </div>
             <p class="review-text">${r.comment}</p>
-        </div>`).join('');
+            ${actions}
+        </div>`;
+    }).join('');
 
     sec.innerHTML = `<p class="reviews-heading">Avis clients (${reviews.length})</p>${html}`;
-}  
+}
 
 function submitReview(productId) {
     const rating  = document.getElementById('review-rating')?.value;
@@ -277,9 +291,67 @@ function submitReview(productId) {
     .then(r => r.json())
     .then(() => {
         document.getElementById('review-comment').value = '';
-        document.getElementById('review-rating').value  = '';
+        document.getElementById('review-rating').value  = '5';
         loadReviews(productId); // Rafraîchit la liste des avis
         requestProducts(); // Optionnel : rafraîchit le catalogue pour la note moyenne
+    });
+}
+
+function openEditReview(reviewId, productId, rating, comment) {
+    document.getElementById('review-rating').value = rating;
+    document.getElementById('review-comment').value = comment;
+
+    const btn = document.querySelector('.review-form .btn-cta-primary');
+    btn.textContent = 'Mettre à jour l’avis';
+    btn.onclick = () => updateReview(reviewId, productId);
+}
+
+function updateReview(reviewId, productId) {
+    const rating = document.getElementById('review-rating')?.value;
+    const comment = document.getElementById('review-comment')?.value?.trim();
+    if (!rating || !comment) {
+        alert('Merci de renseigner une note et un commentaire.');
+        return;
+    }
+
+    fetch(`${API_BASE}reviews.php?id=${reviewId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${window.userToken || ''}`
+        },
+        body: JSON.stringify({
+            rating,
+            comment
+        })
+    })
+    .then(r => r.json())
+    .then(() => {
+        document.getElementById('review-comment').value = '';
+        document.getElementById('review-rating').value = '5';
+
+        const btn = document.querySelector('.review-form .btn-cta-primary');
+        btn.textContent = "Publier l'avis";
+        btn.onclick = () => submitReview(productId);
+
+        loadReviews(productId);
+        requestProducts();
+    });
+}
+
+function deleteReview(reviewId, productId) {
+    if (!confirm('Supprimer cet avis ?')) return;
+
+    fetch(`${API_BASE}reviews.php?id=${reviewId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${window.userToken || ''}`
+        }
+    })
+    .then(r => r.json())
+    .then(() => {
+        loadReviews(productId);
+        requestProducts();
     });
 }
 
