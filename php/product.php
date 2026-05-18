@@ -3,6 +3,7 @@
 header('Content-Type: application/json');
 require_once 'db.php';
 
+
 $db = dbConnect();
 $id = $_GET['id'] ?? null;
 if (!$id) {
@@ -40,6 +41,5 @@ if (!$product) {
 
 http_response_code(200);
 echo json_encode($product);
-
 
 ?>

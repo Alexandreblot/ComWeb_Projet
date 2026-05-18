@@ -3,8 +3,6 @@
 require_once 'constants.php';
 
 
-
-
 function dbConnect() {
     try {
         $db = new PDO(
@@ -20,23 +18,5 @@ function dbConnect() {
         exit();
     }
 }
-
-
-/* ----------- Test (à suppr plus tard) ----------------------------------------
-
-header('Content-Type: application/json');
-
-$db = dbConnect();
-
-$stmt = $db->query("SELECT * FROM products");
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-echo json_encode($products);
-
-*/
-
-
-
-
 
 ?>

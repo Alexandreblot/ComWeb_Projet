@@ -412,9 +412,7 @@ function onLoginSuccess(loginVal, role) {
         document.getElementById('chip-role').textContent   = role;
     }
 
-
     document.getElementById('btn-open-login')?.classList.add('d-none');
-
     if (role === 'admin') {
         document.getElementById('admin-form')?.classList.remove('d-none');
     }
@@ -446,7 +444,7 @@ function addProduct() {
         price:       document.getElementById('product-price')?.value,
         category:    document.getElementById('product-category')?.value,
         stock:       document.getElementById('product-stock')?.value,
-        image:       document.getElementById('product-image')?.value?.trim(), // Ajouté
+        image:       document.getElementById('product-image')?.value?.trim(),
     };
     
     if (!body.name || !body.price || !body.category) return;
@@ -476,6 +474,7 @@ function confirmDelete(productId) {
         headers: { 'Authorization': `Bearer ${window.userToken || ''}` }
     }).then(() => requestProducts());
 }
+
 function openEditProduct(productId) {
     isEditing = true;
     editId = productId;
@@ -492,11 +491,12 @@ function openEditProduct(productId) {
             document.getElementById('product-price').value = p.price;
             document.getElementById('product-category').value = p.category;
             document.getElementById('product-stock').value = p.stock;
-            document.getElementById('product-image').value = p.image; // Ajouté
+            document.getElementById('product-image').value = p.image;
             
             document.getElementById('admin-form').scrollIntoView({ behavior: 'smooth' });
         });
 }
+
 function cancelEdit() {
     isEditing = false;
     editId = null;

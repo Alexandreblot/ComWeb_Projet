@@ -8,7 +8,6 @@ $db = dbConnect();
 $method = $_SERVER['REQUEST_METHOD'];
 
 switch ($method) {
-
     // ───────────────────────────── GET ─────────────────────────────
     case 'GET':
         $category = $_GET['category'] ?? null;

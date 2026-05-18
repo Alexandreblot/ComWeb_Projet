@@ -4,8 +4,6 @@ let ws = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     connectWebSocket('127.0.0.1', 12345);
-
-
     const chatInput = document.getElementById('chat-input');
     chatInput?.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -42,7 +40,6 @@ function connectWebSocket(ip, port = 12345) {
 function sendMessage() {
     const input = document.getElementById('chat-input');
     const text = input?.value?.trim();
-
     if (!text) return;
 
     appendBubble(window.userLogin || 'Vous', text, 'self');

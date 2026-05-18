@@ -2,21 +2,21 @@
 
 Boutique en Ligne Simplifiée
 
-## 👥 Équipe
+## Équipe
 
 | Rôle                 | Membre                | Responsabilités                             |
 | -------------------- | --------------------- | ------------------------------------------- |
-| 🔧 Backend           | Valentin TANG-PATUREL | PHP, BDD, API REST, OAuth2                  |
-| 🎨 Frontend          | Gabriel PANIEZ        | HTML, CSS, JS, AJAX, WebSocket              |
-| 🔀 Intégration & Git | Alexandre BLOT        | Git, branches, conflits, tests bout en bout |
+|    Backend           | Valentin TANG-PATUREL | PHP, BDD, API REST, OAuth2                  |
+|    Frontend          | Gabriel PANIEZ        | HTML, CSS, JS, AJAX, WebSocket              |
+|    Intégration & Git | Alexandre BLOT        | Git, branches, conflits, tests bout en bout |
 
 ## But du projet
 
 Le but de ce projet est de créer un site web ecommerce fonctionnelle avec le web. Les Administrateurs gèrent le catalogue de produits. Les clients consultent, notent et commentent. Un **chat WebSocket** assure le support en temps réel.
 
-## 📅 Avancement par séance
+## Avancement par séance
 
-### ✅ S1 — Initialisation du projet
+### S1 — Initialisation du projet
 
 > Git · HTML · MySQL · Structure
 
@@ -29,7 +29,7 @@ Le but de ce projet est de créer un site web ecommerce fonctionnelle avec le we
 
 ---
 
-### ✅ S2 — Chargement dynamique du catalogue
+### S2 — Chargement dynamique du catalogue
 
 > AJAX · JSON · PHP
 
@@ -42,7 +42,7 @@ Le but de ce projet est de créer un site web ecommerce fonctionnelle avec le we
 
 ---
 
-### ✅ S3 — API REST complète
+### S3 — API REST complète
 
 > REST · PHP · GET POST PUT DELETE
 
@@ -56,7 +56,7 @@ Le but de ce projet est de créer un site web ecommerce fonctionnelle avec le we
 
 ---
 
-### ✅ S4 — Chat support en temps réel
+### S4 — Chat support en temps réel
 
 > WebSocket · JavaScript · Serveur Python
 
@@ -69,7 +69,7 @@ Le but de ce projet est de créer un site web ecommerce fonctionnelle avec le we
 
 ---
 
-### 🔄 S5 — Authentification OAuth2 avec rôles
+### S5 — Authentification OAuth2 avec rôles
 
 > OAuth2 · Tokens · Rôles · PHP · JavaScript
 
