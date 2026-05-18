@@ -293,14 +293,6 @@ Configurer :
 php/constants.php
 ```
 
-## Serveur WebSocket
-
-Lancer le serveur WebSocket Python sur :
-
-```text
-127.0.0.1:12345
-```
-
 ## Démarrage
 
 Ouvrir :
