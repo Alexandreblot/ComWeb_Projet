@@ -57,9 +57,9 @@ switch ($method) {
         $stmt->execute([
             ':name' => strip_tags($data['name']),
             ':description' => strip_tags($data['description']),
-            ':price' => $data['price'],
-            ':category' => $data['category'],
-            ':stock' => $data['stock'],
+            ':price' => (float)$data['price'],
+            ':category' => strip_tags($data['category']),
+            ':stock' => (int)$data['stock'],
             ':image' => strip_tags($data['image'])
         ]);
 
@@ -101,9 +101,9 @@ switch ($method) {
         $stmt->execute([
             ':name' => strip_tags($data['name']),
             ':description' => strip_tags($data['description']),
-            ':price' => $data['price'],
-            ':category' => $data['category'],
-            ':stock' => $data['stock'],
+            ':price' => (float)$data['price'],
+            ':category' => strip_tags($data['category']),
+            ':stock' => (int)$data['stock'],
             ':image' => strip_tags($data['image']),
             ':id' => $id
         ]);

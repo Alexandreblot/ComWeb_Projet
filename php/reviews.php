@@ -51,9 +51,9 @@ switch ($method) {
         ");
 
         $stmt->execute([
-            ':productId' => $data['productId'],
+            ':productId' => (int)$data['productId'],
             ':userLogin' => $user['login'],
-            ':rating' => $data['rating'],
+            ':rating' => (int)$data['rating'],
             ':comment' => strip_tags($data['comment'])
         ]);
 
@@ -99,7 +99,7 @@ switch ($method) {
         ");
 
         $stmt->execute([
-            ':rating' => $data['rating'],
+            ':rating' => (int)$data['rating'],
             ':comment' => strip_tags($data['comment']),
             ':id' => $id
         ]);
